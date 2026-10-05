@@ -57,14 +57,15 @@ class AxisTwistCompensation:
         for i in range(len(poslist)):
             pos = poslist[i]
             zo = 0.
-            if self.z_compensations:
+            apply_twist = 1 if (pos.bed_x,pos.bed_y) != (pos.test_x,pos.test_y) else 0
+            if self.z_compensations and apply_twist:
                 zo += self._get_interpolated_z_compensation(
                     pos.bed_x, self.z_compensations,
                     self.compensation_start_x,
                     self.compensation_end_x
                     )
 
-            if self.zy_compensations:
+            if self.zy_compensations and apply_twist:
                 zo += self._get_interpolated_z_compensation(
                     pos.bed_y, self.zy_compensations,
                     self.compensation_start_y,
